@@ -28,7 +28,7 @@ public class MuInfoService {
     public Object MusicalDetail() {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders(); // 헤더가 있어야 json으로 인식해서 외부처리가능
-        UriComponents builder = UriComponentsBuilder.newInstance()
+        UriComponents builder = UriComponentsBuilder.newInstance() // uri 조합을 쉽게해줌
                 .scheme("http")
                 .host("www.kopis.or.kr")
                 .path("/openApi/resftul/pblprfr")

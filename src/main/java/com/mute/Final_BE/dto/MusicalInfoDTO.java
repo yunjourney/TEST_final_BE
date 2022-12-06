@@ -13,8 +13,8 @@ public class MusicalInfoDTO {
     private Long indexNum; // 인덱스아이디
     private String mt20id; // 공연 ID
     private String prfnm; // 공연이름
-    private Date prfpdfrom; // 공연 시작일
-    private Date prfpdto; // 공연 종료일
+    private String prfpdfrom; // 공연 시작일
+    private String prfpdto; // 공연 종료일
     private String fcltynm; // 공연시설명
     private String prfcast; // 공연출연진
 //    private String prfruntime; // 공연 런타임

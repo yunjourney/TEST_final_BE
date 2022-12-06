@@ -1,12 +1,13 @@
 package com.mute.Final_BE.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
 import org.json.simple.parser.JSONParser;
-import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,43 +15,67 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.DataInput;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/jsonapi")
+@Slf4j
+@RequestMapping("/json")
+@JsonIgnoreProperties
 public class JsonMusicalInfoController {
 
-//    @GetMapping("/detail")
     private String key="5a64fe18bbc04f6aaedbedbe0e9dfa13";
     private String mt20id="PF202217";
 
-//    private ObjectMapper objectMapper = new ObjectMapper();
-
     @GetMapping("/musical")
-    public Object MusicalDetail(HttpServletResponse response) throws IOException {
+    public Map<String, Object> MusicalDetail() {
+        Map<String, Object> map = new HashMap<>();
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        //HttpHeaders headers = new HttpHeaders(); // 헤더가 있어야 json으로 인식해서 외부처리가능
-        UriComponents uri = UriComponentsBuilder
-                .fromUriString("https://www.kopis.or.kr")
-                .path("/openApi/resftul/pblprfr/")
-                .path(mt20id) // 뮤지컬 id (임시 : 베토벤 id)
-                .queryParam("service", key) // 인증키
-                .encode() // utf-8 로 인코딩
-                .build();
+        try {
+            UriComponents uri = UriComponentsBuilder
+                    .fromUriString("https://www.kopis.or.kr")
+                    .path("/openApi/restful/pblprfr/")
+                    .path(mt20id) // 뮤지컬 id (임시 : 베토벤 id)
+                    .queryParam("service", key) // 인증키
+                    .encode() // utf-8 로 인코딩
+                    .build();
 
-        RestTemplate restTemplate = new RestTemplate();
+            RestTemplate restTemplate = new RestTemplate();
 
-        JSONObject jsonObject = XML.toJSONObject(uri.toString()); // xml 데이터를 json 데이터로 변환
+            // api를 호출하여 결과를 가져온 다음 String형태로 먼저 받음
+            // RestTemplate.getForObject(URI url, Class<T> responseType) => (호출하는 url, 반환타입)
+            String response = restTemplate.getForObject(uri.toUri(), String.class);
 
-        JSONParser parser = new JSONParser(); // json을 파싱하여 원하는 값만 가져오려고
-//        JSONObject object = (JSONObject) parser.parse(jsonObject);
+            // xml 데이터를 json 데이터로 변환
+            JSONObject jsonObj1 = XML.toJSONObject(response);
 
+            // 데이터에서 꺼내쓰기
+            JSONObject jsonObj2 = jsonObj1.getJSONObject("dbs").getJSONObject("db");
+
+            log.info("데이터 확인 : " + jsonObj2.toString());
+
+
+            // json string타입을 object 객체로
+            JSONObject jsonObj3 = objectMapper.readValue(jsonObj2.toString(), JSONObject.class);
+
+            log.info("배열확인 : " + jsonObj3.toString());
+
+//            JSONArray jsonArr = jsonObj2.getJSONArray("db");
+//            for(int i = 1; i < jsonArr.length(); i++) {
+//                String prfpdfrom = jsonArr.getJSONObject(i).getString("prfpdfrom");
+//                String prfpdto = jsonArr.getJSONObject(i).getString("prfpdto");
+//                String prfnm = jsonArr.getJSONObject(i).getString("prfnm");
+//                String fcltynm = jsonArr.getJSONObject(i).getString("fcltynm");
+//            }
+//
+//            log.info("배열확인 : " + jsonArr);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } return map;
 
 
 
@@ -72,6 +97,5 @@ public class JsonMusicalInfoController {
 //
 //        ResponseEntity<String> result = restTemplate.exchange(req, String.class);
 
-        return uri.toUriString();
     }
 }

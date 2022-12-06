@@ -4,6 +4,7 @@ import com.mute.Final_BE.dto.MusicalListDTO;
 import com.mute.Final_BE.repository.MusicalDetailRepository;
 import com.mute.Final_BE.repository.MusicalListRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.json.XML;
 import org.json.simple.JSONArray;
@@ -21,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class MusicalListService {
 
@@ -49,6 +51,7 @@ public class MusicalListService {
             while ((returnLine = bufferedReader.readLine()) != null) {
                 result.append(returnLine);
             }
+
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject)jsonParser.parse(String.valueOf(XML.toJSONObject(result.toString()))); // xml 데이터를 json 데이터로 변환
             JSONObject dbs = (JSONObject)jsonObject.get("dbs");
@@ -61,6 +64,7 @@ public class MusicalListService {
                 String musicalEnd = (String) jsonObject.get("prfpdto");
                 String theaterName = (String) jsonObject.get("fcltynm");
                 String posterUrl = (String) jsonObject.get("poster");
+
 
             }
 
