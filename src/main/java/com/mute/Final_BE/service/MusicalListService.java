@@ -1,80 +1,65 @@
-package com.mute.Final_BE.service;
-
-import com.mute.Final_BE.dto.MusicalListDTO;
-import com.mute.Final_BE.repository.MusicalDetailRepository;
-import com.mute.Final_BE.repository.MusicalListRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
-import org.json.XML;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-@Service
-@Slf4j
-@RequiredArgsConstructor
-public class MusicalListService {
-
-    @Autowired
-    private MusicalListRepository musicalListRepository;
-
-    @GetMapping("/list")
-    public String MusicalList() {
-
-        StringBuffer result = new StringBuffer();
-        String jsonPrintString = null;
-
-
-        try {
-            String apiUrl = "http://www.kopis.or.kr/openApi/restful/pblprfr" +
-                    "?service=5a64fe18bbc04f6aaedbedbe0e9dfa13" +
-                    "&stdate=20220901" +
-                    "&edddate=20230301" +
-                    "&cpage=1" + "&rows=20" + "&signgucode=11" + "&shcate=AAAB";
-            URL url = new URL(apiUrl);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.connect();
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(urlConnection.getInputStream());
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream, "UTF-8"));
-            String returnLine;
-            while ((returnLine = bufferedReader.readLine()) != null) {
-                result.append(returnLine);
-            }
-
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject)jsonParser.parse(String.valueOf(XML.toJSONObject(result.toString()))); // xml 데이터를 json 데이터로 변환
-            JSONObject dbs = (JSONObject)jsonObject.get("dbs");
-            JSONArray dbArr = (JSONArray)dbs.get("db");
-            for(int i = 0; i < dbArr.size(); i++) {
-                jsonObject = (JSONObject) dbArr.get(i);
-                String musicalName = (String) jsonObject.get("prfnm");
-                String musicalId = (String) jsonObject.get("mt20id");
-                String musicalStart = (String) jsonObject.get("prfpdfrom");
-                String musicalEnd = (String) jsonObject.get("prfpdto");
-                String theaterName = (String) jsonObject.get("fcltynm");
-                String posterUrl = (String) jsonObject.get("poster");
-
-
-            }
-
-
-//            jsonPrintString = jsonObject.toString(); // string 형식으로 불러짐
-//            JSONObject jsonObject1
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return jsonPrintString;
-    }
-}
+//package com.mute.Final_BE.service;
+//
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.mute.Final_BE.repository.MusicalListRepository;
+//import lombok.extern.slf4j.Slf4j;
+//import org.json.XML;
+//import org.json.simple.JSONArray;
+//import org.json.simple.JSONObject;
+//import org.springframework.stereotype.Service;
+//import org.springframework.web.client.RestTemplate;
+//import org.springframework.web.util.UriComponents;
+//import org.springframework.web.util.UriComponentsBuilder;
+//
+//@Service
+//@Slf4j
+//public class MusicalListService {
+//
+//    private MusicalListRepository musicalListRepository;
+//    public MusicalListService(MusicalListRepository musicalListRepository) {
+//        this.musicalListRepository = musicalListRepository;
+//    }
+//
+//    private String key="5a64fe18bbc04f6aaedbedbe0e9dfa13";
+//
+//    public String MusicalList() {
+//        try {
+//            UriComponents uri = UriComponentsBuilder
+//                    .fromUriString("https://www.kopis.or.kr")
+//                    .path("/openApi/restful/pblprfr/")
+//                    .queryParam("service", key) // 인증키
+//                    .queryParam("stdate", 20221001) // 공연시작일
+//                    .queryParam("eddate", 20230401) // 공연종료일
+//                    .queryParam("cpage", 1) // 현재 페이지
+//                    .queryParam("rows", 5) // 페이지 당 목록 수
+//                    .queryParam("signgucode", 11) // 지역코드(11 = 서울)
+//                    .queryParam("shcate", "AAAB") // 장르코드(AAAB = 뮤지컬)
+//                    .encode() // utf-8 로 인코딩
+//                    .build();
+//
+//            RestTemplate restTemplate = new RestTemplate();
+//
+//            // api를 호출하여 결과를 가져온 다음 String형태로 먼저 받음
+//            // RestTemplate.getForObject(URI url, Class<T> responseType) => (호출하는 url, 반환타입)
+//            String response = restTemplate.getForObject(uri.toUri(), String.class);
+//
+//            // xml 데이터를 json 데이터로 변환
+//            org.json.JSONObject jsonObj1 = XML.toJSONObject(response);
+//
+////            // 파싱해서 데이터 분리하기
+////            JSONParser jsonParser = new JSONParser();
+////            JSONObject jsonParseObj = (JSONObject) jsonParser.parse(jsonObj1.toString());
+//
+//            // JSONObject로 데이터 가져오기
+//            JSONObject jsonObj2 = (JSONObject) jsonObj1.get("dbs");
+//
+//            // 배열형식이니 JSONArray로 가져오기
+//            JSONArray jsonArr = (JSONArray) jsonObj2.get("db");
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return "어쩌라고";
+//
+//    }
+//}

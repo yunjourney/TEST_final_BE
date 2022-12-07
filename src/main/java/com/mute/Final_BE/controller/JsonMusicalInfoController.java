@@ -4,8 +4,9 @@ package com.mute.Final_BE.controller;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 import org.json.XML;
+import org.json.simple.parser.JSONParser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,6 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequestMapping("/json")
-@JsonIgnoreProperties
 public class JsonMusicalInfoController {
 
     private String key="5a64fe18bbc04f6aaedbedbe0e9dfa13";
@@ -48,12 +48,52 @@ public class JsonMusicalInfoController {
             String response = restTemplate.getForObject(uri.toUri(), String.class);
 
             // xml 데이터를 json 데이터로 변환
-            JSONObject jsonObj1 = XML.toJSONObject(response);
+//            JSONObject jsonObj1 = XML.toJSONObject(response);
+//
+//            // 데이터에서 꺼내쓰기
+//            jsonObj2 = jsonObj1.getJSONObject("dbs").getJSONObject("db");
 
-            // 데이터에서 꺼내쓰기
-            jsonObj2 = jsonObj1.getJSONObject("dbs").getJSONObject("db");
+            log.warn("데이터 확인 : {}" + jsonObj2);
 
-            log.info("데이터 확인 : {}" + jsonObj2.toString());
+            //JSONParser jsonParser = new JSONParser();
+
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonObj2.toString();
+
+    }
+}
+
+
+
+
+
+//            // xml 데이터를 json 데이터로 변환
+//            JSONObject xmlToJsonObj = XML.toJSONObject(response);
+//
+////            // 데이터에서 꺼내쓰기
+////            jsonObj2 = xmlToJsonObj.getJSONObject("dbs").getJSONObject("db");
+//
+////            log.info("데이터 확인 : {}" + jsonObj2.toString());
+//
+//            // JSON 파싱 객체 생성
+//            JSONParser jsonParser = new JSONParser();
+//
+//            // JSON String타입의 데이터를 분해
+//            JSONObject jsonObj = (JSONObject) jsonParser.parse(xmlToJsonObj.toString());
+//
+//            // dbs에 있는 데이터 받아오기
+//            JSONObject parseDbs = (JSONObject) jsonObj.get("dbs");
+//
+//            // db에 있는 데이터 받아오기
+//            JSONObject parseDb = (JSONObject) parseDbs.get("db");
+//
+//            log.warn("데이터확인" + parseDb);
 
 
 //            // json string타입을 object 배열 객체로..안됨
@@ -72,10 +112,6 @@ public class JsonMusicalInfoController {
 //            log.info("배열확인 : " + jsonArr);
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return jsonObj2.toString();
 
 
         //jsonPrintString = jsonObject.toString(); // string 형식으로 불러짐
@@ -92,6 +128,3 @@ public class JsonMusicalInfoController {
 //                .build();
 //
 //        ResponseEntity<String> result = restTemplate.exchange(req, String.class);
-
-    }
-}

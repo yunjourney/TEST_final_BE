@@ -1,12 +1,7 @@
 package com.mute.Final_BE.controller;
 
-import com.mute.Final_BE.service.MusicalListService;
+import com.mute.Final_BE.service.MusicalListServiceX;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 
 @RestController
@@ -14,9 +9,9 @@ import java.net.URL;
 public class TestMusicalInfoController {
 
     // service 로직 연결
-    private final MusicalListService musicalListService;
-    public TestMusicalInfoController(MusicalListService musicalListService) {
-        this.musicalListService = musicalListService;
+    private final MusicalListServiceX musicalListServiceX;
+    public TestMusicalInfoController(MusicalListServiceX musicalListServiceX) {
+        this.musicalListServiceX = musicalListServiceX;
     }
 
 //    @PostMapping("/list")

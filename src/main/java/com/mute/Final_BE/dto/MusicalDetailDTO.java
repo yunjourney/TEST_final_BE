@@ -1,5 +1,6 @@
 package com.mute.Final_BE.dto;
 
+
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -9,8 +10,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class MusicalListDTO {
-
+public class MusicalDetailDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long indexNum; // 인덱스넘버
@@ -36,22 +36,14 @@ public class MusicalListDTO {
     private String mt10id; // 공연장 ID
 
 
-//    private List<String> services; // 서비스..테스트용
-
-    public MusicalListDTO (Long indexNum, String mt20id, String prfnm,
-                           String fcltynm, String prfpdfrom, String prfpdto,
-                           String prfstate, String poster) {
-        this.indexNum = indexNum;
-        this.mt20id = mt20id;
-        this.prfnm = prfnm;
-        this.fcltynm = fcltynm;
-        this.prfpdfrom = prfpdfrom;
-        this.prfpdto = prfpdto;
-        this.prfstate = prfstate;
-        this.poster = poster;
+    public MusicalDetailDTO (String prfcast, String prfcrew, String dtguidance) {
+        this.prfcast = prfcast;
+        this.prfcrew = prfcrew;
+        this.dtguidance = dtguidance;
     }
 
-    public MusicalListDTO() {
+
+    public MusicalDetailDTO() {
 
     }
 }
