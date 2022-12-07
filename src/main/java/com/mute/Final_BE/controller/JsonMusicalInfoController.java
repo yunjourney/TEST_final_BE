@@ -4,10 +4,8 @@ package com.mute.Final_BE.controller;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
-import org.json.simple.parser.JSONParser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.DataInput;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,9 +26,11 @@ public class JsonMusicalInfoController {
     private String mt20id="PF202217";
 
     @GetMapping("/musical")
-    public Map<String, Object> MusicalDetail() {
-        Map<String, Object> map = new HashMap<>();
-        ObjectMapper objectMapper = new ObjectMapper();
+    public String MusicalDetail() {
+//        Map<String, Object> map = new HashMap<>();
+//        ObjectMapper objectMapper = new ObjectMapper();
+
+        JSONObject jsonObj2 = null;
 
         try {
             UriComponents uri = UriComponentsBuilder
@@ -52,15 +51,15 @@ public class JsonMusicalInfoController {
             JSONObject jsonObj1 = XML.toJSONObject(response);
 
             // 데이터에서 꺼내쓰기
-            JSONObject jsonObj2 = jsonObj1.getJSONObject("dbs").getJSONObject("db");
+            jsonObj2 = jsonObj1.getJSONObject("dbs").getJSONObject("db");
 
-            log.info("데이터 확인 : " + jsonObj2.toString());
+            log.info("데이터 확인 : {}" + jsonObj2.toString());
 
 
-            // json string타입을 object 객체로
-            JSONObject jsonObj3 = objectMapper.readValue(jsonObj2.toString(), JSONObject.class);
-
-            log.info("배열확인 : " + jsonObj3.toString());
+//            // json string타입을 object 배열 객체로..안됨
+//            JSONObject jsonObj3 = objectMapper.readValue(jsonObj2.toString(), JSONObject.class);
+//
+//            log.info("배열확인 : " + jsonObj3.toString());
 
 //            JSONArray jsonArr = jsonObj2.getJSONArray("db");
 //            for(int i = 1; i < jsonArr.length(); i++) {
@@ -75,9 +74,8 @@ public class JsonMusicalInfoController {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } return map;
-
-
+        }
+        return jsonObj2.toString();
 
 
         //jsonPrintString = jsonObject.toString(); // string 형식으로 불러짐
@@ -85,8 +83,6 @@ public class JsonMusicalInfoController {
 //       response.sendRedirect(uri.toString());
 //        response.setContentType("application/json");
 //        response.setCharacterEncoding("utf-8");
-
-
 
 
 //        //헤더를 넣기 위한 것
