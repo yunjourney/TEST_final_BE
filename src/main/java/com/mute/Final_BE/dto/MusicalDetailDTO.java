@@ -24,7 +24,6 @@ public class MusicalDetailDTO {
     private String prfstate; // 공연상태코드
     private String poster; // 포스터 경로
 
-
     private String prfcast; // 공연 출연진
     private String prfcrew; // 공연 제작진
     private String prfruntime; // 공연 시간

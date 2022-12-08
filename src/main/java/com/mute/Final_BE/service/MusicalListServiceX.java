@@ -1,6 +1,6 @@
 package com.mute.Final_BE.service;
 
-import com.mute.Final_BE.repository.MusicalListRepository;
+//import com.mute.Final_BE.repository.MusicalListRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -22,8 +22,8 @@ import java.net.URL;
 @RequiredArgsConstructor
 public class MusicalListServiceX {
 
-    @Autowired
-    private MusicalListRepository musicalListRepository;
+//    @Autowired
+//    private MusicalListRepository musicalListRepository;
 
     @GetMapping("/list")
     public String MusicalList() {
