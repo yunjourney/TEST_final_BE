@@ -28,9 +28,6 @@ public class MusicalListController {
     @Autowired
     private MusicalListRepository musicalListRepository;
 
-    @Autowired
-    private MusicalDetailRepository musicalDetailRepository;
-
     private String key="5a64fe18bbc04f6aaedbedbe0e9dfa13";
 
     @GetMapping("/list")
@@ -83,47 +80,5 @@ public class MusicalListController {
             e.printStackTrace();
         }
         return "되나?";
-    }
-
-
-    @GetMapping("/detail")
-    public String MusicalDetail() {
-
-        try {
-            UriComponents uri = UriComponentsBuilder
-                    .fromUriString("https://www.kopis.or.kr")
-                    .path("/openApi/restful/pblprfr/")
-                    .path("PF202217") // 뮤지컬 id (임시 : 베토벤 id)
-                    .queryParam("service", key) // 인증키
-                    .encode() // utf-8 로 인코딩
-                    .build();
-
-            RestTemplate restTemplate = new RestTemplate();
-            String response = restTemplate.getForObject(uri.toUri(), String.class);
-
-            org.json.JSONObject jsonObj1 = XML.toJSONObject(response);
-
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonParseObj = (JSONObject) jsonParser.parse(jsonObj1.toString());
-
-            JSONObject jsonObj2 = (JSONObject) jsonParseObj.get("dbs");
-            JSONObject jsonObj3 = (JSONObject) jsonObj2.get("db");
-
-            log.warn(jsonObj3.toJSONString());
-
-            // db에 저장
-            for(int i = 0; i < jsonObj3.size(); i++) {
-                JSONObject tmp = (JSONObject) jsonObj3.get(i);
-                MusicalDetailDTO detailDTO = new MusicalDetailDTO(
-                        (String)tmp.get("prfcast"), (String)tmp.get("prfcrew"),
-                        (String)tmp.get("dtguidance"));
-                musicalDetailRepository.save(detailDTO);
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "뮤지컬상세정보";
     }
 }
