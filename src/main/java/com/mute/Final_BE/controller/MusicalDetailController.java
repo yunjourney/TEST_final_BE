@@ -3,7 +3,6 @@ package com.mute.Final_BE.controller;
 import aj.org.objectweb.asm.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mute.Final_BE.dto.MusicalDetailDTO;
-import com.mute.Final_BE.dto.MusicalListDTO;
 import com.mute.Final_BE.repository.MusicalListRepository;
 import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
