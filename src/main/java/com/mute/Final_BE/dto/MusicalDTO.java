@@ -12,29 +12,31 @@ import java.util.Date;
 @Data
 @RequiredArgsConstructor
 public class MusicalDTO {
+    private String musicalId; // 공연 ID(PK)
+    private String musicalName; // 공연 이름
+    private String theaterName; // 공연장 이름
 
-    private String musicalId; // 공연 ID
-    private String musicalName; // 공연명
-    private String theaterName; // 공연시설명
+    private LocalDate musicalStart; // 공연 시작일
+    private LocalDate musicalEnd; // 공연 종료일
 
-    @DateTimeFormat(pattern = "yyyy.MM.dd")
-    private String musicalStart; // 공연시작일
-    @JsonFormat(pattern = "yyyy.MM.dd")
-    private String musicalEnd; // 공연종료일
+    private LocalDate musicalTicketStart; // 티켓 예매 시작일
+    private String musicalStatus; // 공연 상태 (공연예정/공연중/공연종료)
+    private String musicalPoster; // 공연 포스터
 
-    private Date musicalTicketStart; // 티켓 예매 시작일
-    private String musicalStatus; // 공연상태코드
-    private String musicalPoster; // 포스터 경로
-
+    // api DTO에 저장
     public MusicalDTO (JSONObject itemJson) {
+        String tmp1 = itemJson.getString("prfpdfrom");
+        String tmp2 = itemJson.getString("prfpdto");
+
         this.musicalId = itemJson.getString("mt20id");
         this.musicalName = itemJson.getString("prfnm");
         this.theaterName = itemJson.getString("fcltynm");
-        this.musicalStart = itemJson.getString("prfpdfrom");
-        this.musicalEnd = itemJson.getString("prfpdto");
+        this.musicalStart = LocalDate.parse(tmp1.replace(".", "-"));
+        this.musicalEnd = LocalDate.parse(tmp2.replace(".", "-"));
         this.musicalStatus = itemJson.getString("prfstate");
         this.musicalPoster = itemJson.getString("poster");
     }
+
 }
 
 //    private String prfcast; // 공연 출연진

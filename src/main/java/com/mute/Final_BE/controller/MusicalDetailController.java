@@ -1,15 +1,12 @@
 package com.mute.Final_BE.controller;
 
-import aj.org.objectweb.asm.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mute.Final_BE.dto.MusicalDetailDTO;
 import com.mute.Final_BE.repository.MusicalListRepository;
-import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
-import com.mute.Final_BE.repository.MusicalDetailRepository;
+import com.mute.Final_BE.repository.MusicalRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.json.XML;
@@ -20,9 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.DataInput;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,7 +26,7 @@ import java.util.Map;
 public class MusicalDetailController {
 
         @Autowired
-        private MusicalDetailRepository musicalDetailRepository;
+        private MusicalRepository musicalRepository;
 
         @Autowired
         private MusicalListRepository musicalListRepository;
